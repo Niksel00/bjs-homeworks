@@ -25,19 +25,7 @@ class AlarmClock {
     }
 
     getCurrentFormattedTime() {
-        const time = new Date();
-        if (`${time.getMinutes()}`.length < 2 || `${time.getHours()}`.length < 2) {
-            if (`${time.getHours()}`.length < 2) {
-                timeHours = 0 + `${time.getHours()}`;
-            }
-            if (`${time.getMinutes()}`.length < 2) {
-                timeHoursAndMinutes = timeHours + ':' + 0 + `${time.getMinutes()}`;
-                return timeHoursAndMinutes;
-            }
-            return timeHoursAndMinutes + ':' + new Date().getMinutes();
-        }
-        return `${new Date().getHours()}:${new Date().getMinutes()}`;
-       
+        return new Date().toLocaleTimeString().slice(0,-3);
     }
 
     start() {
@@ -64,4 +52,21 @@ class AlarmClock {
         this.stop();
         this.alarmCollection = [];
     }
+}
+
+let phoneAlarm = new AlarmClock();
+
+function testCase() {
+    phoneAlarm.addClock("09:00", () => console.log('Пора вставать'), 1);
+    phoneAlarm.addClock("09:01", () => {
+        console.log('Давай, вставай уже!');
+        phoneAlarm.removeClock(2)
+    }, 2);
+    phoneAlarm.addClock("09:02", () => {
+        console.log('Вставай, а то проспишь!');
+        phoneAlarm.clearAlarms();
+        phoneAlarm.printAlarms();
+    }, 3);
+    phoneAlarm.printAlarms();
+    phoneAlarm.start();    
 }
